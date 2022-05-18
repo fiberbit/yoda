@@ -251,6 +251,20 @@ test_groups:
     category: intake-intake
     subcategory: intake-intake
     dataClassification: unspecified
+
+  - groupName: intake-foo
+    category: intake-intake
+    subcategory: intake-intake
+    dataClassification: unspecified
+  - groupName: grp-datamanager-foo
+    category: intake-intake
+    subcategory: intake-intake
+    dataClassification: unspecified
+  - groupName: grp-vault-foo
+    category: intake-intake
+    subcategory: intake-intake
+    dataClassification: unspecified
+ 
   - groupName: research-revisions
     category: initial
     subcategory: initial
@@ -559,6 +573,21 @@ test_groupusers:
     user: datamanager
     role: manager
 
+  - groupName: intake-foo
+    user: researcher
+    role: normal
+  - groupName: intake-foo
+    user: groupmanager
+    role: manager
+  - groupName: intake-foo
+    user: datamanager
+    role: normal
+
+  - groupName: grp-datamanager-foo
+    user: datamanager
+    role: manager
+
+
   - groupName: research-revisions
     user: functionaladminpriv
     role: manager
@@ -607,12 +636,15 @@ deletion_datamanager_groups:
 deletion_grp_groups:
   - grp: datamanager-initial
   - grp: datamanager-test
+  - grp: datamanager-foo  
   - grp: intake-initial
   - grp: intake-test
   - grp: vault-initial
   - grp: vault-test
+  - grp: vault-foo
 
 deletion_intake_groups:
+  - intake: foo
 
 reset_tiers:
   - dev001
