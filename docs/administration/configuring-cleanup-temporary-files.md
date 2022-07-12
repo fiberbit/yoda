@@ -40,7 +40,7 @@ The mask will search for files whose name match the given wildcards.
 ### Multiple masks
 Masks can be added by concatenation being sepecated by a comma.
 ```  
-    multiple masks in mask defintion: '._*','Thumbs.db'  
+    multiple masks in mask definition: '._*','Thumbs.db'  
 ```
 
 ## Configuring the variable
