@@ -57,3 +57,4 @@ When deploying Yoda the default value of this variable contains following masks:
 
 ## Usage
 The research space offers an option to activate the action menu has a specific menu option 'Cleanup temporary files'.  
+
