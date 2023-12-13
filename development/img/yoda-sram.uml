@@ -1,0 +1,106 @@
+@startuml
+skinparam padding 2
+skinparam shadowing false
+
+title Yoda & SRAM
+
+actor       Researcher          as researcher
+actor       "Group Manager"     as groupmanager
+participant Yoda                as yoda
+participant SRAM                as SRAM
+participant "Institutional IdP" as IdP
+
+== Create a group ==
+autonumber 1.0
+groupmanager  -> yoda        : Create group
+activate yoda
+yoda         -> SRAM        : Create CO (SRAM post new CO API)
+activate SRAM
+SRAM        --> yoda        : 200 OK (CO identifier)
+deactivate SRAM
+yoda         -> yoda        : Associate CO identifier to group
+yoda        --> groupmanager : Group created
+deactivate yoda
+
+== Add researcher to group (SRAM join request) ==
+autonumber 2.0
+groupmanager  -> yoda        : Add researcher to group
+activate yoda
+yoda         -> yoda        : Researcher added to group
+yoda       -->> researcher  : Invitation mail with SRAM CO self-invite link
+deactivate yoda
+hnote over yoda
+    https://sram.surf.nl/registration?collaboration=<CO identifier>
+endhnote
+...
+researcher   -> SRAM        : Follow SRAM CO invitation link
+activate SRAM
+SRAM         -> IdP         : Redirect to IdP (Request to join CO)
+activate IdP
+IdP         --> SRAM        : Researcher authenticated
+deactivate IdP
+SRAM       -->> researcher  : Request motivation to join CO
+researcher   -> SRAM        : Request to join CO
+SRAM       -->> groupmanager : New join request mail (approve / disapprove)
+deactivate SRAM
+...
+groupmanager  -> SRAM        : Accept join request
+activate SRAM
+SRAM         -> SRAM        : Researcher added to CO
+SRAM       -->> researcher  : Join request accepted mail
+deactivate SRAM
+
+== Add researcher to group (SRAM invitation) ==
+autonumber 3.0
+groupmanager  -> yoda        : Add researcher to group
+activate yoda
+yoda         -> yoda        : Researcher added to group
+yoda         -> SRAM        : Invite user CO (SRAM collaboration invite API)
+deactivate yoda
+activate SRAM
+SRAM       -->> researcher  : Invitation mail for collaboration
+deactivate SRAM
+...
+researcher   -> SRAM        : Follow SRAM CO invitation link
+activate SRAM
+SRAM         -> IdP         : Redirect to IdP (Log in to accept the invite)
+activate IdP
+IdP         --> SRAM        : Researcher authenticated
+deactivate IdP
+SRAM         -> SRAM        : Researcher added to CO
+deactivate SRAM
+
+== Change user role in group ==
+autonumber 4.0
+groupmanager  -> yoda        : Change role of researcher in group
+activate yoda
+yoda         -> SRAM        : Change role of researcher in CO (SRAM update CO membership API)
+activate SRAM
+SRAM        --> yoda        : 200 OK
+deactivate SRAM
+yoda        --> groupmanager : Role of researcher changed in group
+deactivate yoda
+
+== Remove researcher from group ==
+autonumber 5.0
+groupmanager  -> yoda        : Remove researcher from group
+activate yoda
+yoda         -> SRAM        : Remove user from CO (SRAM delete CO membership API)
+activate SRAM
+SRAM        --> yoda        : 200 OK
+deactivate SRAM
+yoda        --> groupmanager : Researcher removed from group
+deactivate yoda
+
+== Remove a group ==
+autonumber 6.0
+groupmanager  -> yoda        : Remove group
+activate yoda
+yoda         -> SRAM        : Remove CO (SRAM delete CO API)
+activate SRAM
+SRAM        --> yoda        : 200 OK
+deactivate SRAM
+yoda        --> groupmanager : Group removed
+deactivate yoda
+
+@enduml
